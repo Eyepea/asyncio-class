@@ -1,17 +1,22 @@
 = Using asyncio in Python 3.4
-:author:    Aaron Maxwell <amax@redsymbol.net>
+:author:    Aaron Maxwell <amax@redsymbol.net>, Ludovic Gasc (GMLudo)
 :backend:   slidy
 :max-width: 45em
 :source-highlighter: pygments
 :data-uri:
 :icons:
 
-*+git clone git@github.com:redsymbol/asyncio-class.git+*
+== Preface
+
+*+git clone https://git@github.com/Eyepea/asyncio-class.git+*
 
 To fully participate: make sure you have Python 3.4 installed on your
 machine, and are able to start up the Python interpreter. (Earlier
-versions aren't compatible with this course.) If you don't, get it
-from python.org now, while we're waiting to get started.
+versions aren't compatible with this c
+ourse.) If you don't, get it
+from https://www.python.org/downloads/ now, while we're waiting to get started.
+
+**Tip**: On Linux, you can use pythonz, to install quickly Python 3.4: http://saghul.github.io/pythonz/
 
 == Concepts
 
@@ -23,18 +28,124 @@ asyncio is a module implementing asynchronous I/O, built into Python
 * transports
 * protocols
 
-A decent starting point: http://python.org/dev/peps/pep-3156/
+Technical details: http://python.org/dev/peps/pep-3156/
+
+Implementation: https://hg.python.org/cpython/file/40c031308967/Lib/asyncio
+
+== Back to basics: "yield" (1)
+
+"yield" is a keyword that is used like return, except the function will return a generator.
+
+Generators are iterators (ex: a list), but you can only iterate over them once. It's because they do not store all the values in memory, they generate the values on the fly.
+
+Example:
+
+[source,python]
+----
+def yield_example():
+     print('start')
+     yield
+     print('continue')
+     yield
+     print('stop')
+
+generator = yield_example()
+next(generator)
+----
+
+== Back to basics: "yield" (2)
+
+Yield example with a return value:
+
+[source,python]
+----
+def return_yield_example():
+     for i in range(5):
+         yield i*i
+
+for j in return_yield_example():
+     print(j)
+----
 
 == asyncio uses "yield from"
 
 Python 3.4 introduced the "yield from" expression. It looks similar
 to, but behaves different from, a simple "yield".
 
-(Personally, I think it should be a separate single token - say,
-"yieldfrom" - to highlight its different semantics. I encourage you to
-think of it that way.)
+Learn about this in PEP 380: http://legacy.python.org/dev/peps/pep-0380/
 
-Learn about this in PEP 380.
+== Source code of "yield from"
+
+[source,python]
+----
+RESULT = yield from EXPR
+----
+
+=
+
+[source,python]
+----
+_i = iter(EXPR)
+try:
+    _y = next(_i)
+except StopIteration as _e:
+    _r = _e.value
+else:
+    while 1:
+        try:
+            _s = yield _y
+        except GeneratorExit as _e:
+            try:
+                _m = _i.close
+            except AttributeError:
+                pass
+            else:
+                _m()
+            raise _e
+        except BaseException as _e:
+            _x = sys.exc_info()
+            try:
+                _m = _i.throw
+            except AttributeError:
+                raise _e
+            else:
+                try:
+                    _y = _m(*_x)
+                except StopIteration as _e:
+                    _r = _e.value
+                    break
+        else:
+            try:
+                if _s is None:
+                    _y = next(_i)
+                else:
+                    _y = _i.send(_s)
+            except StopIteration as _e:
+                _r = _e.value
+                break
+RESULT = _r
+----
+
+== In a generator / coroutine code
+
+[source,python]
+----
+return value
+----
+
+=
+
+[source,python]
+----
+raise StopIteration(value)
+----
+
+== AsyncIO Debug
+
+* launch: export PYTHONASYNCIODEBUG=1
+* The asyncio module logs information with the logging module in the logger 'asyncio'.
+
+Details on: https://docs.python.org/3/library/asyncio-dev.html
 
 == Event Loops
 
@@ -75,7 +186,7 @@ https://groups.google.com/forum/#!topic/python-tulip/bmphRrryuFk
 * You schedule coroutines to run by:
   - yielding from it (in another calling coroutine)
   - create a task, then schedule it
-  - or use loop.create_task(coro()) do both in one step
+  - or use loop.async(coro())(< Python 3.4.2) or loop.create_task(coro()) (>= Python 3.4.2) do both in one step
 
 == Coroutines 
 
@@ -462,16 +573,181 @@ def client_connected_handler(client_reader, client_writer):
 
 Then start your echo server again, and try to connect.
 
+== aiohttp: Client
+
+aiohttp is a library that implements HTTP protocol with AsyncIO.
+
+Examples in: https://github.com/KeepSafe/aiohttp/tree/master/examples
+
+In a coroutine, add this code:
+[source,python]
+----
+#!/usr/bin/env python3
+
+import aiohttp
+import sys
+import asyncio
+
+
+def curl(url):
+    response = yield from aiohttp.request('GET', url)
+    print(repr(response))
+
+    chunk = yield from response.content.read()
+    print('Downloaded: %s' % len(chunk))
+
+    response.close()
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(curl(sys.argv[1]))
+----
+
+== aiohttp: Basic server
+
+[source,python]
+----
+"""Basic http server with minimal setup"""
+import aiohttp
+import aiohttp.server
+
+import asyncio
+from urllib.parse import urlparse, parse_qsl
+from aiohttp.multidict import MultiDict
+
+
+class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
+
+    @asyncio.coroutine
+    def handle_request(self, message, payload):
+        response = aiohttp.Response(
+            self.writer, 200, http_version=message.version)
+        content = "<h1>It Works!</h1>"
+        bcontent = content.encode('utf-8')
+        response.add_header('Content-Type', 'text/html; charset=UTF-8')
+        response.add_header('Content-Length', str(len(bcontent)))
+        response.send_headers()
+        response.write(bcontent)
+        yield from response.write_eof()
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    f = loop.create_server(
+        lambda: HttpRequestHandler(debug=True, keep_alive=75),
+        '0.0.0.0', '8080')
+    srv = loop.run_until_complete(f)
+    print('serving on', srv.sockets[0].getsockname())
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        pass
+----
+
+== aiohttp: Complete server
+
+[source,python]
+----
+"""Basic http server with minimal setup"""
+import aiohttp
+import aiohttp.server
+
+import asyncio
+from urllib.parse import urlparse, parse_qsl
+from aiohttp.multidict import MultiDict
+
+
+class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
+
+    @asyncio.coroutine
+    def handle_request(self, message, payload):
+        response = aiohttp.Response(
+            self.writer, 200, http_version=message.version)
+        get_params = MultiDict(parse_qsl(urlparse(message.path).query))
+        if message.method == 'POST':
+            post_params = yield from payload.read()
+        else:
+            post_params = None
+        content = "<h1>It Works!</h1>"
+        if get_params:
+            content += "<h2>Get params</h2><p>" + str(get_params) + "</p>"
+        if post_params:
+            content += "<h2>Post params</h2><p>" + str(post_params) + "</p>"
+        bcontent = content.encode('utf-8')
+        response.add_header('Content-Type', 'text/html; charset=UTF-8')
+        response.add_header('Content-Length', str(len(bcontent)))
+        response.send_headers()
+        response.write(bcontent)
+        yield from response.write_eof()
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    f = loop.create_server(
+        lambda: HttpRequestHandler(debug=True, keep_alive=75),
+        '0.0.0.0', '8080')
+    srv = loop.run_until_complete(f)
+    print('serving on', srv.sockets[0].getsockname())
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        pass
+----
+
+== aiohttp: multi-process server
+
+https://github.com/KeepSafe/aiohttp/blob/master/examples/mpsrv.py
+
+== aiorest: example
+
+[source,python]
+----
+import asyncio
+import aiohttp
+import aiorest
+
+
+# define a simple request handler
+# which accept no arguments
+# and responds with json
+def hello(request):
+    return {'hello': 'world'}
+
+
+loop = asyncio.get_event_loop()
+server = aiorest.RESTServer(hostname='127.0.0.1',
+                            loop=loop)
+
+# configure routes
+server.add_url('GET', '/', hello)
+# create server
+srv = loop.run_until_complete(loop.create_server(
+    server.make_handler, '127.0.0.1', 8080))
+
+loop.run_forever()
+----
+
+== Benchmarks with wrk
+
+Modern HTTP benchmarking tool: https://github.com/wg/wrk
+
+Example:
+
+[source,python]
+---
+wrk -t12 -c400 -d30s http://127.0.0.1:8080/index.html
+---
+
 == Thank you!
 
 For being beta testers for this free class in asyncio.
 
 Contact me any time:
 
- - Aaron Maxwell
- - amax@redsymbol.net
- - http://linkedin.com/in/aaronmaxwell
- - "redsymbol" on github, hacker news, twitter, etc.
+ - Ludovic Gasc (GMLudo)
+ - https://twitter.com/GMLudo
+ - https://github.com/GMLudo
 
 ////////////////
 == Why Separate them?
@@ -553,7 +829,7 @@ def transfer_data(src_reader, dest_writer):
 * In asyncio, a generator that follows certain conventions
 * In particular, produces values via "return" or "yield from" (or
 throwing an exception)
-* Does NOT use "yield" 
+* Does NOT use "yield"
 
 
 ////////////////

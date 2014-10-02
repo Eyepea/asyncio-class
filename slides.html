@@ -4,8 +4,8 @@
 <head>
 <title>Using asyncio in Python 3.4</title>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="copyright" content="Copyright &#169; Aaron Maxwell &lt;amax@redsymbol.net&gt;" />
-<meta name="generator" content="AsciiDoc 8.6.7" />
+<meta name="copyright" content="Copyright &#169; Aaron Maxwell &lt;amax@redsymbol.net&gt;, Ludovic Gasc (GMLudo)" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -88,9 +88,15 @@ ul, ol, li > p {
 ul > li     { color: #aaa; }
 ul > li > * { color: black; }
 
-pre {
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
   padding: 0;
   margin: 0;
+}
+pre {
+  white-space: pre-wrap;
 }
 
 #author {
@@ -220,7 +226,7 @@ div.exampleblock > div.content {
 }
 
 div.imageblock div.content { padding-left: 0; }
-span.image img { border-style: none; }
+span.image img { border-style: none; vertical-align: text-bottom; }
 a.image:visited { color: white; }
 
 dl {
@@ -416,12 +422,6 @@ div.unbreakable { page-break-inside: avoid; }
  *
  * */
 
-tt {
-  font-family: "Courier New", Courier, monospace;
-  font-size: inherit;
-  color: navy;
-}
-
 div.tableblock {
   margin-top: 1.0em;
   margin-bottom: 1.5em;
@@ -454,12 +454,6 @@ div.tableblock > table[frame="vsides"] {
  * html5 specific
  *
  * */
-
-.monospaced {
-  font-family: "Courier New", Courier, monospace;
-  font-size: inherit;
-  color: navy;
-}
 
 table.tableblock {
   margin-top: 1.0em;
@@ -985,19 +979,16 @@ li {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
-/*
-  pygmentize filter
-*/
 .highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f4f4f4; }
-.highlight .c { color: #008800; font-style: italic } /* Comment */
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
-.highlight .k { color: #AA22FF; font-weight: bold } /* Keyword */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .cm { color: #008800; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #008800 } /* Comment.Preproc */
-.highlight .c1 { color: #008800; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #008800; font-weight: bold } /* Comment.Special */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
 .highlight .gr { color: #FF0000 } /* Generic.Error */
@@ -1008,48 +999,49 @@ li {
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
 .highlight .gt { color: #0040D0 } /* Generic.Traceback */
-.highlight .kc { color: #AA22FF; font-weight: bold } /* Keyword.Constant */
-.highlight .kd { color: #AA22FF; font-weight: bold } /* Keyword.Declaration */
-.highlight .kn { color: #AA22FF; font-weight: bold } /* Keyword.Namespace */
-.highlight .kp { color: #AA22FF } /* Keyword.Pseudo */
-.highlight .kr { color: #AA22FF; font-weight: bold } /* Keyword.Reserved */
-.highlight .kt { color: #00BB00; font-weight: bold } /* Keyword.Type */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
-.highlight .s { color: #BB4444 } /* Literal.String */
-.highlight .na { color: #BB4444 } /* Name.Attribute */
-.highlight .nb { color: #AA22FF } /* Name.Builtin */
-.highlight .nc { color: #0000FF } /* Name.Class */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
 .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
 .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
-.highlight .nf { color: #00A000 } /* Name.Function */
+.highlight .nf { color: #0000FF } /* Name.Function */
 .highlight .nl { color: #A0A000 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
-.highlight .nv { color: #B8860B } /* Name.Variable */
+.highlight .nv { color: #19177C } /* Name.Variable */
 .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
 .highlight .w { color: #bbbbbb } /* Text.Whitespace */
 .highlight .mf { color: #666666 } /* Literal.Number.Float */
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
 .highlight .mo { color: #666666 } /* Literal.Number.Oct */
-.highlight .sb { color: #BB4444 } /* Literal.String.Backtick */
-.highlight .sc { color: #BB4444 } /* Literal.String.Char */
-.highlight .sd { color: #BB4444; font-style: italic } /* Literal.String.Doc */
-.highlight .s2 { color: #BB4444 } /* Literal.String.Double */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
 .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
-.highlight .sh { color: #BB4444 } /* Literal.String.Heredoc */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
 .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
 .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
-.highlight .s1 { color: #BB4444 } /* Literal.String.Single */
-.highlight .ss { color: #B8860B } /* Literal.String.Symbol */
-.highlight .bp { color: #AA22FF } /* Name.Builtin.Pseudo */
-.highlight .vc { color: #B8860B } /* Name.Variable.Class */
-.highlight .vg { color: #B8860B } /* Name.Variable.Global */
-.highlight .vi { color: #B8860B } /* Name.Variable.Instance */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+
 
 </style>
 <script type="text/javascript">
@@ -3905,15 +3897,18 @@ setTimeout(w3c_slidy.hide_slides, 50);
 <body class="book" style="max-width:45em">
 <div id="header" class="slide">
 <h1>Using asyncio in Python 3.4</h1>
-<span id="author">Aaron Maxwell &lt;amax@redsymbol.net&gt;</span><br />
+<span id="author">Aaron Maxwell &lt;amax@redsymbol.net&gt;, Ludovic Gasc (GMLudo)</span><br />
 </div>
-<div id="preamble" class="slide">
+<div class="sect1 slide">
+<h1 id="_preface">Preface</h1>
 <div class="sectionbody" style="max-width:45em">
-<div class="paragraph"><p><strong><tt>git clone <a href="mailto:git@github.com">git@github.com</a>:redsymbol/asyncio-class.git</tt></strong></p></div>
+<div class="paragraph"><p><strong><code>git clone <a href="https://git@github.com/Eyepea/asyncio-class.git">https://git@github.com/Eyepea/asyncio-class.git</a></code></strong></p></div>
 <div class="paragraph"><p>To fully participate: make sure you have Python 3.4 installed on your
 machine, and are able to start up the Python interpreter. (Earlier
-versions aren&#8217;t compatible with this course.) If you don&#8217;t, get it
-from python.org now, while we&#8217;re waiting to get started.</p></div>
+versions aren&#8217;t compatible with this c
+ourse.) If you don&#8217;t, get it
+from <a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a> now, while we&#8217;re waiting to get started.</p></div>
+<div class="paragraph"><p><strong>Tip</strong>: On Linux, you can use pythonz, to install quickly Python 3.4: <a href="http://saghul.github.io/pythonz/">http://saghul.github.io/pythonz/</a></p></div>
 </div>
 </div>
 <div class="sect1 slide">
@@ -3943,7 +3938,41 @@ protocols
 </span>
 </li>
 </ul>
-<div class="paragraph"><p>A decent starting point: <a href="http://python.org/dev/peps/pep-3156/">http://python.org/dev/peps/pep-3156/</a></p></div>
+<div class="paragraph"><p>Technical details: <a href="http://python.org/dev/peps/pep-3156/">http://python.org/dev/peps/pep-3156/</a></p></div>
+<div class="paragraph"><p>Implementation: <a href="https://hg.python.org/cpython/file/40c031308967/Lib/asyncio">https://hg.python.org/cpython/file/40c031308967/Lib/asyncio</a></p></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_back_to_basics_yield_1">Back to basics: "yield" (1)</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="paragraph"><p>"yield" is a keyword that is used like return, except the function will return a generator.</p></div>
+<div class="paragraph"><p>Generators are iterators (ex: a list), but you can only iterate over them once. It&#8217;s because they do not store all the values in memory, they generate the values on the fly.</p></div>
+<div class="paragraph"><p>Example:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="k">def</span> <span class="nf">yield_example</span><span class="p">():</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">&#39;start&#39;</span><span class="p">)</span>
+     <span class="k">yield</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">&#39;continue&#39;</span><span class="p">)</span>
+     <span class="k">yield</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">&#39;stop&#39;</span><span class="p">)</span>
+
+<span class="n">generator</span> <span class="o">=</span> <span class="n">yield_example</span><span class="p">()</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_back_to_basics_yield_2">Back to basics: "yield" (2)</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="paragraph"><p>Yield example with a return value:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="k">def</span> <span class="nf">return_yield_example</span><span class="p">():</span>
+     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+         <span class="k">yield</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">return_yield_example</span><span class="p">():</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+</pre></div></div></div>
 </div>
 </div>
 <div class="sect1 slide">
@@ -3951,10 +3980,87 @@ protocols
 <div class="sectionbody" style="max-width:45em">
 <div class="paragraph"><p>Python 3.4 introduced the "yield from" expression. It looks similar
 to, but behaves different from, a simple "yield".</p></div>
-<div class="paragraph"><p>(Personally, I think it should be a separate single token - say,
-"yieldfrom" - to highlight its different semantics. I encourage you to
-think of it that way.)</p></div>
-<div class="paragraph"><p>Learn about this in PEP 380.</p></div>
+<div class="paragraph"><p>Learn about this in PEP 380: <a href="http://legacy.python.org/dev/peps/pep-0380/">http://legacy.python.org/dev/peps/pep-0380/</a></p></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_source_code_of_yield_from">Source code of "yield from"</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="n">RESULT</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">EXPR</span>
+</pre></div></div></div>
+<div class="paragraph"><p>=</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="n">_i</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">EXPR</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">_y</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">_i</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+    <span class="n">_r</span> <span class="o">=</span> <span class="n">_e</span><span class="o">.</span><span class="n">value</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_s</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">_y</span>
+        <span class="k">except</span> <span class="ne">GeneratorExit</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_m</span> <span class="o">=</span> <span class="n">_i</span><span class="o">.</span><span class="n">close</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_m</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="n">_e</span>
+        <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_m</span> <span class="o">=</span> <span class="n">_i</span><span class="o">.</span><span class="n">throw</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">_e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">_y</span> <span class="o">=</span> <span class="n">_m</span><span class="p">(</span><span class="o">*</span><span class="n">_x</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+                    <span class="n">_r</span> <span class="o">=</span> <span class="n">_e</span><span class="o">.</span><span class="n">value</span>
+                    <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">_s</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">_y</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">_i</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">_y</span> <span class="o">=</span> <span class="n">_i</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">_s</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+                <span class="n">_r</span> <span class="o">=</span> <span class="n">_e</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">break</span>
+<span class="n">RESULT</span> <span class="o">=</span> <span class="n">_r</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_in_a_generator_coroutine_code">In a generator / coroutine code</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="k">return</span> <span class="n">value</span>
+</pre></div></div></div>
+<div class="paragraph"><p>=</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_asyncio_debug">AsyncIO Debug</h1>
+<div class="sectionbody" style="max-width:45em">
+<ul class="">
+<li>
+<span>
+launch: export PYTHONASYNCIODEBUG=1
+</span>
+</li>
+<li>
+<span>
+The asyncio module logs information with the logging module in the logger <em>asyncio</em>.
+</span>
+</li>
+</ul>
+<div class="paragraph"><p>Details on: <a href="https://docs.python.org/3/library/asyncio-dev.html">https://docs.python.org/3/library/asyncio-dev.html</a></p></div>
 </div>
 </div>
 <div class="sect1 slide">
@@ -4045,7 +4151,7 @@ create a task, then schedule it
 </li>
 <li>
 <span>
-or use loop.create_task(coro()) do both in one step
+or use loop.async(coro())(&lt; Python 3.4.2) or loop.create_task(coro()) (&gt;= Python 3.4.2) do both in one step
 </span>
 </li>
 </ul>
@@ -4533,7 +4639,7 @@ the writer. Add this function to echo_server_task.py:</p></div>
 <span class="k">def</span> <span class="nf">handle_client</span><span class="p">(</span><span class="n">client_reader</span><span class="p">,</span> <span class="n">client_writer</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s">&#39;New client&#39;</span><span class="p">)</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">client_reader</span><span class="o">.</span><span class="n">at_eof</span><span class="p">():</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="kn">from</span> <span class="nn">client_reader.readline</span><span class="err">())</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield from</span> <span class="n">client_reader</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
         <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="n">client_writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;echo:&#39;</span> <span class="o">+</span> <span class="n">data</span><span class="p">)</span>
 </pre></div></div></div>
@@ -4559,6 +4665,177 @@ incoming connections.</p></div>
 </div>
 </div>
 <div class="sect1 slide">
+<h1 id="_aiohttp_client">aiohttp: Client</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="paragraph"><p>aiohttp is a library that implements HTTP protocol with AsyncIO.</p></div>
+<div class="paragraph"><p>Examples in: <a href="https://github.com/KeepSafe/aiohttp/tree/master/examples">https://github.com/KeepSafe/aiohttp/tree/master/examples</a></p></div>
+<div class="paragraph"><p>In a coroutine, add this code:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+
+<span class="k">def</span> <span class="nf">curl</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+
+    <span class="n">chunk</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Downloaded: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">))</span>
+
+    <span class="n">response</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">curl</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_aiohttp_basic_server">aiohttp: Basic server</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;Basic http server with minimal setup&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">aiohttp.server</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qsl</span>
+<span class="kn">from</span> <span class="nn">aiohttp.multidict</span> <span class="kn">import</span> <span class="n">MultiDict</span>
+
+
+<span class="k">class</span> <span class="nc">HttpRequestHandler</span><span class="p">(</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ServerHttpProtocol</span><span class="p">):</span>
+
+    <span class="nd">@asyncio.coroutine</span>
+    <span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">http_version</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&lt;h1&gt;It Works!&lt;/h1&gt;&quot;</span>
+        <span class="n">bcontent</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s">&#39;text/html; charset=UTF-8&#39;</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">&#39;Content-Length&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bcontent</span><span class="p">)))</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">send_headers</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bcontent</span><span class="p">)</span>
+        <span class="k">yield from</span> <span class="n">response</span><span class="o">.</span><span class="n">write_eof</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">create_server</span><span class="p">(</span>
+        <span class="k">lambda</span><span class="p">:</span> <span class="n">HttpRequestHandler</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">keep_alive</span><span class="o">=</span><span class="mi">75</span><span class="p">),</span>
+        <span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="s">&#39;8080&#39;</span><span class="p">)</span>
+    <span class="n">srv</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;serving on&#39;</span><span class="p">,</span> <span class="n">srv</span><span class="o">.</span><span class="n">sockets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getsockname</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_aiohttp_complete_server">aiohttp: Complete server</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;Basic http server with minimal setup&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">aiohttp.server</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qsl</span>
+<span class="kn">from</span> <span class="nn">aiohttp.multidict</span> <span class="kn">import</span> <span class="n">MultiDict</span>
+
+
+<span class="k">class</span> <span class="nc">HttpRequestHandler</span><span class="p">(</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ServerHttpProtocol</span><span class="p">):</span>
+
+    <span class="nd">@asyncio.coroutine</span>
+    <span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">http_version</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+        <span class="n">get_params</span> <span class="o">=</span> <span class="n">MultiDict</span><span class="p">(</span><span class="n">parse_qsl</span><span class="p">(</span><span class="n">urlparse</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
+            <span class="n">post_params</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">payload</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">post_params</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&lt;h1&gt;It Works!&lt;/h1&gt;&quot;</span>
+        <span class="k">if</span> <span class="n">get_params</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;&lt;h2&gt;Get params&lt;/h2&gt;&lt;p&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">get_params</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;&lt;/p&gt;&quot;</span>
+        <span class="k">if</span> <span class="n">post_params</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;&lt;h2&gt;Post params&lt;/h2&gt;&lt;p&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">post_params</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;&lt;/p&gt;&quot;</span>
+        <span class="n">bcontent</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s">&#39;text/html; charset=UTF-8&#39;</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">&#39;Content-Length&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bcontent</span><span class="p">)))</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">send_headers</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bcontent</span><span class="p">)</span>
+        <span class="k">yield from</span> <span class="n">response</span><span class="o">.</span><span class="n">write_eof</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">create_server</span><span class="p">(</span>
+        <span class="k">lambda</span><span class="p">:</span> <span class="n">HttpRequestHandler</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">keep_alive</span><span class="o">=</span><span class="mi">75</span><span class="p">),</span>
+        <span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="s">&#39;8080&#39;</span><span class="p">)</span>
+    <span class="n">srv</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;serving on&#39;</span><span class="p">,</span> <span class="n">srv</span><span class="o">.</span><span class="n">sockets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getsockname</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_aiohttp_multi_process_server">aiohttp: multi-process server</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="paragraph"><p><a href="https://github.com/KeepSafe/aiohttp/blob/master/examples/mpsrv.py">https://github.com/KeepSafe/aiohttp/blob/master/examples/mpsrv.py</a></p></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_aiorest_example">aiorest: example</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">aiorest</span>
+
+
+<span class="c"># define a simple request handler</span>
+<span class="c"># which accept no arguments</span>
+<span class="c"># and responds with json</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;hello&#39;</span><span class="p">:</span> <span class="s">&#39;world&#39;</span><span class="p">}</span>
+
+
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">aiorest</span><span class="o">.</span><span class="n">RESTServer</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+                            <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
+
+<span class="c"># configure routes</span>
+<span class="n">server</span><span class="o">.</span><span class="n">add_url</span><span class="p">(</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="n">hello</span><span class="p">)</span>
+<span class="c"># create server</span>
+<span class="n">srv</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">create_server</span><span class="p">(</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">make_handler</span><span class="p">,</span> <span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+
+<span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_benchmarks_with_wrk">Benchmarks with wrk</h1>
+<div class="sectionbody" style="max-width:45em">
+<div class="paragraph"><p>Modern HTTP benchmarking tool: <a href="https://github.com/wg/wrk">https://github.com/wg/wrk</a></p></div>
+<div class="paragraph"><p>Example:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="o">---</span>
+<span class="n">wrk</span> <span class="o">-</span><span class="n">t12</span> <span class="o">-</span><span class="n">c400</span> <span class="o">-</span><span class="n">d30s</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+<span class="o">---</span>
+</pre></div></div></div>
+</div>
+</div>
+<div class="sect1 slide">
 <h1 id="_thank_you">Thank you!</h1>
 <div class="sectionbody" style="max-width:45em">
 <div class="paragraph"><p>For being beta testers for this free class in asyncio.</p></div>
@@ -4566,22 +4843,17 @@ incoming connections.</p></div>
 <ul class="">
 <li>
 <span>
-Aaron Maxwell
+Ludovic Gasc (GMLudo)
 </span>
 </li>
 <li>
 <span>
-<a href="mailto:amax@redsymbol.net">amax@redsymbol.net</a>
+<a href="https://twitter.com/GMLudo">https://twitter.com/GMLudo</a>
 </span>
 </li>
 <li>
 <span>
-<a href="http://linkedin.com/in/aaronmaxwell">http://linkedin.com/in/aaronmaxwell</a>
-</span>
-</li>
-<li>
-<span>
-"redsymbol" on github, hacker news, twitter, etc.
+<a href="https://github.com/GMLudo">https://github.com/GMLudo</a>
 </span>
 </li>
 </ul>

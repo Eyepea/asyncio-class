@@ -16,3 +16,10 @@ jump to a specific page.
 
 Aaron Maxwell
 amax at redsymbol dot net
+
+## Contributor
+
+Ludovic Gasc (GMLudo)
+
+* https://twitter.com/GMLudo
+* https://github.com/GMLudo
