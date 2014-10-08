@@ -17,7 +17,7 @@ jump to a specific page.
 Aaron Maxwell
 amax at redsymbol dot net
 
-## Contributor
+## Contributors
 
 Ludovic Gasc (GMLudo)
 
